@@ -1,6 +1,7 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useCurrentUser } from '@/auth/auth-context';
 import { getEntry, saveEntry } from '@/db/entries';
 
 export type SaveStatus = 'idle' | 'pending' | 'saved' | 'error';
@@ -8,11 +9,12 @@ export type SaveStatus = 'idle' | 'pending' | 'saved' | 'error';
 const AUTOSAVE_DELAY_MS = 700;
 
 /**
- * Loads a day's entry and autosaves every change (after a short typing
- * pause, and when the screen unmounts).
+ * Loads the signed-in user’s entry for a day and autosaves every change
+ * (after a short typing pause, and when the screen unmounts).
  */
 export function useEntry(date: string) {
   const db = useSQLiteContext();
+  const userId = useCurrentUser().id;
   const [loaded, setLoaded] = useState(false);
   const [rating, setRatingState] = useState<number | null>(null);
   const [content, setContentState] = useState('');
@@ -30,19 +32,19 @@ export function useEntry(date: string) {
     if (!dirty.current) return;
     dirty.current = false;
     try {
-      await saveEntry(db, date, latest.current);
+      await saveEntry(db, userId, date, latest.current);
       setStatus('saved');
     } catch (e) {
       console.error('Failed to save entry', e);
       dirty.current = true;
       setStatus('error');
     }
-  }, [db, date]);
+  }, [db, userId, date]);
 
   // Initial load. (To switch days, remount the component with a `key`.)
   useEffect(() => {
     let cancelled = false;
-    getEntry(db, date).then((entry) => {
+    getEntry(db, userId, date).then((entry) => {
       if (cancelled) return;
       latest.current = { rating: entry?.rating ?? null, content: entry?.content ?? '' };
       dirty.current = false;
@@ -55,7 +57,7 @@ export function useEntry(date: string) {
       cancelled = true;
       flush();
     };
-  }, [db, date, flush]);
+  }, [db, userId, date, flush]);
 
   const schedule = useCallback(() => {
     dirty.current = true;

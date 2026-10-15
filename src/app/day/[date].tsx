@@ -2,6 +2,7 @@ import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { Alert, Pressable, StyleSheet } from 'react-native';
 
+import { useCurrentUser } from '@/auth/auth-context';
 import { DayEditor } from '@/components/day-editor';
 import { ThemedText } from '@/components/themed-text';
 import { deleteEntry } from '@/db/entries';
@@ -11,6 +12,7 @@ import { formatLongDate, isValidDateKey } from '@/utils/dates';
 export default function DayScreen() {
   const { date } = useLocalSearchParams<{ date: string }>();
   const db = useSQLiteContext();
+  const userId = useCurrentUser().id;
 
   if (!isValidDateKey(date)) {
     return <ThemedText style={styles.error}>Date invalide.</ThemedText>;
@@ -23,7 +25,7 @@ export default function DayScreen() {
         text: 'Supprimer',
         style: 'destructive',
         onPress: async () => {
-          await deleteEntry(db, date);
+          await deleteEntry(db, userId, date);
           router.back();
         },
       },

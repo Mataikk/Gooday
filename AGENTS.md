@@ -45,4 +45,5 @@ Docs: https://docs.expo.dev/eas/index.md
 - Write code, comments, commit messages and documentation in **English**.
 - Write all user-facing text in the app (labels, placeholders, alerts, dates) in **French**.
 - The app must keep running in **Expo Go**: only use modules bundled with Expo Go, no custom native code.
-- The journal stores one entry per day, keyed by a local `'YYYY-MM-DD'` date (see `src/utils/dates.ts`). Schema changes go through a new migration step in `src/db/entries.ts`.
+- The journal stores one entry per user per day, keyed by a local `'YYYY-MM-DD'` date (see `src/utils/dates.ts`). Schema changes go through a new migration step in `src/db/schema.ts`.
+- Accounts are local only (`src/db/users.ts`). Never store passwords in clear text. Screens behind the auth guard get the user with `useCurrentUser()`.

@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Pressable, SectionList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useCurrentUser } from '@/auth/auth-context';
 import { StarRating } from '@/components/star-rating';
 import { ThemedText } from '@/components/themed-text';
 import { Fonts, MaxContentWidth, Spacing } from '@/constants/theme';
@@ -26,14 +27,15 @@ function groupByMonth(entries: Entry[]): Section[] {
 
 export default function HistoryScreen() {
   const db = useSQLiteContext();
+  const userId = useCurrentUser().id;
   const theme = useTheme();
   const [entries, setEntries] = useState<Entry[] | null>(null);
 
   // Reload every time the tab comes into focus.
   useFocusEffect(
     useCallback(() => {
-      listEntries(db).then(setEntries);
-    }, [db])
+      listEntries(db, userId).then(setEntries);
+    }, [db, userId])
   );
 
   const sections = useMemo(() => groupByMonth(entries ?? []), [entries]);

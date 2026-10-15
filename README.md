@@ -19,21 +19,28 @@ Use PowerShell or the VS Code terminal: Git Bash doesn't render Expo's QR code a
 
 ## Features
 
+- **Local accounts**: sign up / sign in with a first name and password. Each account has its own journal, and the session is remembered between launches. Everything stays on the device (no server).
 - **Today**: 5-star rating + free text, saved automatically.
 - **History**: days grouped by month, with the number of days written and the average rating.
 - **Day detail**: read, edit or delete a past day.
+- **Profile**: sign out or delete the account (and its entries).
 
 ## Project structure
 
 ```
 src/
   app/                 Screens (Expo Router: one file = one screen)
-    _layout.tsx        Database provider + navigation
+    _layout.tsx        Database + auth providers, protected routes
+    login.tsx          Sign-in / sign-up screen
     (tabs)/index.tsx   "Today" tab
     (tabs)/history.tsx "History" tab
+    (tabs)/profile.tsx "Profile" tab
     day/[date].tsx     Past day detail
-  components/          Day editor, star rating, themed text/views
-  db/entries.ts        SQLite database (`entries` table, one row per day)
+  auth/                Auth context (session, sign in/up/out)
+  components/          Day editor, star rating, buttons, text fields
+  db/schema.ts         SQLite schema and migrations
+  db/users.ts          Accounts, password hashing, session
+  db/entries.ts        Journal entries (one row per user per day)
   hooks/               Entry loading + autosave, today's date
   utils/dates.ts       'YYYY-MM-DD' date keys and French date formatting
 ```
