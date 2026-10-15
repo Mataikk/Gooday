@@ -7,7 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { deleteEntry } from '@/db/entries';
 import { formatLongDate, isValidDateKey } from '@/utils/dates';
 
-/** Relire ou modifier un jour passé, depuis l'historique. */
+/** Read or edit a past day, opened from the history. */
 export default function DayScreen() {
   const { date } = useLocalSearchParams<{ date: string }>();
   const db = useSQLiteContext();

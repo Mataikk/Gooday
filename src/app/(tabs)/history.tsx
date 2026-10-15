@@ -29,7 +29,7 @@ export default function HistoryScreen() {
   const theme = useTheme();
   const [entries, setEntries] = useState<Entry[] | null>(null);
 
-  // Recharge à chaque fois que l'onglet devient visible.
+  // Reload every time the tab comes into focus.
   useFocusEffect(
     useCallback(() => {
       listEntries(db).then(setEntries);

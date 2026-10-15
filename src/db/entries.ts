@@ -1,14 +1,14 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 /**
- * Une entrée du journal : une seule par jour (la date est la clé primaire).
- * `rating` vaut null tant que la journée n'a pas été notée.
+ * A journal entry: one per day (the date is the primary key).
+ * `rating` is null until the day has been rated.
  */
 export type Entry = {
-  date: string; // 'AAAA-MM-JJ'
-  rating: number | null; // 1 à 5
+  date: string; // 'YYYY-MM-DD'
+  rating: number | null; // 1 to 5
   content: string;
-  createdAt: number; // timestamp en ms
+  createdAt: number; // timestamp in ms
   updatedAt: number;
 };
 
@@ -31,9 +31,9 @@ const toEntry = (row: EntryRow): Entry => ({
 });
 
 /**
- * Crée ou met à jour le schéma. On incrémente DATABASE_VERSION et on ajoute
- * un bloc `if (version < N)` à chaque évolution, sans jamais modifier les
- * blocs existants : les téléphones déjà installés rattrapent ainsi leur retard.
+ * Creates or upgrades the schema. For each schema change, bump
+ * DATABASE_VERSION and add a new `if (version < N)` block, never editing the
+ * existing ones: devices that already have the app then catch up step by step.
  */
 export async function migrateDatabase(db: SQLiteDatabase) {
   const DATABASE_VERSION = 1;
@@ -69,8 +69,8 @@ export async function listEntries(db: SQLiteDatabase): Promise<Entry[]> {
 }
 
 /**
- * Enregistre la note du jour (création ou mise à jour).
- * Une entrée vide (sans texte ni étoiles) est supprimée plutôt que stockée.
+ * Saves a day's entry (insert or update).
+ * An empty entry (no text and no rating) is deleted instead of stored.
  */
 export async function saveEntry(
   db: SQLiteDatabase,

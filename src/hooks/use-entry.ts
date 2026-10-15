@@ -8,8 +8,8 @@ export type SaveStatus = 'idle' | 'pending' | 'saved' | 'error';
 const AUTOSAVE_DELAY_MS = 700;
 
 /**
- * Charge l'entrée d'un jour et l'enregistre automatiquement à chaque
- * modification (après une courte pause de frappe, et au démontage de l'écran).
+ * Loads a day's entry and autosaves every change (after a short typing
+ * pause, and when the screen unmounts).
  */
 export function useEntry(date: string) {
   const db = useSQLiteContext();
@@ -33,13 +33,13 @@ export function useEntry(date: string) {
       await saveEntry(db, date, latest.current);
       setStatus('saved');
     } catch (e) {
-      console.error('Échec de l’enregistrement', e);
+      console.error('Failed to save entry', e);
       dirty.current = true;
       setStatus('error');
     }
   }, [db, date]);
 
-  // Chargement initial. (Pour changer de jour, on remonte le composant avec une `key`.)
+  // Initial load. (To switch days, remount the component with a `key`.)
   useEffect(() => {
     let cancelled = false;
     getEntry(db, date).then((entry) => {

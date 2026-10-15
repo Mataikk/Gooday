@@ -3,7 +3,7 @@ import { AppState } from 'react-native';
 
 import { todayKey } from '@/utils/dates';
 
-/** La date du jour, mise à jour quand l'app revient au premier plan (ex. le lendemain matin). */
+/** Today's date key, refreshed when the app returns to the foreground (e.g. the next morning). */
 export function useTodayKey() {
   const [key, setKey] = useState(todayKey);
 

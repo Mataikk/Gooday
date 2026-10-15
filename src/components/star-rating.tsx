@@ -13,7 +13,7 @@ export function ratingLabel(rating: number | null): string {
 
 type Props = {
   value: number | null;
-  /** Absent : affichage en lecture seule. */
+  /** When omitted, the rating is read-only. */
   onChange?: (value: number | null) => void;
   size?: number;
 };
@@ -43,7 +43,7 @@ export function StarRating({ value, onChange, size = 40 }: Props) {
             accessibilityLabel={`${star} étoile${star > 1 ? 's' : ''}`}
             onPress={() => {
               Haptics.selectionAsync();
-              // Toucher à nouveau l'étoile sélectionnée retire la note.
+              // Tapping the selected star again clears the rating.
               onChange(value === star ? null : star);
             }}
             style={({ pressed }) => pressed && styles.pressed}>

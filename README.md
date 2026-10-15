@@ -1,47 +1,56 @@
 # Gooday
 
-Journal intime pour iOS : une note par jour, et une note de la journée sur 5 étoiles.
+A personal journal for iOS: write one note per day and rate your day out of 5 stars.
 
-Application [Expo](https://expo.dev) (SDK 57), testée avec **Expo Go** sur iPhone.
+Built with [Expo](https://expo.dev) (SDK 57) and tested with **Expo Go** on iPhone. The app's UI is in French.
 
-## Lancer le projet (Windows)
+## Getting started (Windows)
 
-Prérequis : [Node.js LTS](https://nodejs.org) et l'app **Expo Go** sur l'iPhone.
+Requirements: [Node.js LTS](https://nodejs.org) (≥ 20.19.4) and the **Expo Go** app on your iPhone.
 
 ```bash
 npm install
 npx expo start
 ```
 
-Scanne le QR code avec l'appareil photo de l'iPhone. Le PC et l'iPhone doivent être sur le même Wi-Fi ; sinon : `npx expo start --tunnel`.
+Scan the QR code with the iPhone camera. Your PC and iPhone must be on the same Wi-Fi network; otherwise run `npx expo start --tunnel`.
 
-## Fonctionnalités
+Use PowerShell or the VS Code terminal: Git Bash doesn't render Expo's QR code and interactive menu properly.
 
-- **Aujourd'hui** : 5 étoiles + zone de texte, enregistrement automatique.
-- **Historique** : liste des jours par mois, nombre de jours écrits et note moyenne.
-- **Détail d'un jour** : relire, modifier ou supprimer une journée passée.
+## Features
 
-## Structure
+- **Today**: 5-star rating + free text, saved automatically.
+- **History**: days grouped by month, with the number of days written and the average rating.
+- **Day detail**: read, edit or delete a past day.
+
+## Project structure
 
 ```
 src/
-  app/                 Écrans (Expo Router : un fichier = un écran)
-    _layout.tsx        Base de données + navigation
-    (tabs)/index.tsx   Onglet « Aujourd'hui »
-    (tabs)/history.tsx Onglet « Historique »
-    day/[date].tsx     Détail d'un jour passé
-  components/          Éditeur du jour, étoiles, textes thémés
-  db/entries.ts        Base SQLite (table `entries`, une ligne par jour)
-  hooks/               Chargement + enregistrement auto, date du jour
-  utils/dates.ts       Clés de date 'AAAA-MM-JJ' et formatage en français
+  app/                 Screens (Expo Router: one file = one screen)
+    _layout.tsx        Database provider + navigation
+    (tabs)/index.tsx   "Today" tab
+    (tabs)/history.tsx "History" tab
+    day/[date].tsx     Past day detail
+  components/          Day editor, star rating, themed text/views
+  db/entries.ts        SQLite database (`entries` table, one row per day)
+  hooks/               Entry loading + autosave, today's date
+  utils/dates.ts       'YYYY-MM-DD' date keys and French date formatting
 ```
 
-## Commandes utiles
+## Conventions
+
+- Code, comments, commit messages and docs are in **English**.
+- Everything the user sees in the app is in **French**.
+- The app must keep working in **Expo Go** (no custom native code for now).
+
+## Useful commands
 
 ```bash
-npx expo install <paquet>   # ajouter une dépendance compatible avec le SDK
-npx tsc --noEmit            # vérifier les types
-npx expo lint               # linter
+npx expo install <package>  # add a dependency compatible with the SDK
+npx tsc --noEmit            # type-check
+npx expo lint               # lint
+npx rimraf node_modules     # delete node_modules (handles Windows long paths)
 ```
 
-> Les notes écrites dans Expo Go restent dans Expo Go : ce sont des données de test.
+> Notes written while testing in Expo Go live inside Expo Go's sandbox: treat them as test data.

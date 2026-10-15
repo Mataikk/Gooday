@@ -1,5 +1,5 @@
 /**
- * Couleurs et espacements de Gooday, en mode clair et sombre.
+ * Gooday colors and spacing, for light and dark mode.
  */
 
 import '@/global.css';

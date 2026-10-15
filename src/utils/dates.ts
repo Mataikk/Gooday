@@ -1,7 +1,7 @@
 /**
- * Les jours sont identifiés par une clé 'AAAA-MM-JJ' calculée dans le fuseau
- * horaire du téléphone (et non en UTC : sinon une note écrite à 1h du matin
- * à Paris tomberait sur la veille).
+ * Days are identified by a 'YYYY-MM-DD' key computed in the device's local
+ * time zone (not UTC: otherwise an entry written at 1 a.m. in Paris would
+ * land on the previous day).
  */
 
 export function toDateKey(date: Date): string {
@@ -29,7 +29,7 @@ function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-/** « Jeudi 15 octobre » (l'année n'est ajoutée que si ce n'est pas l'année en cours). */
+/** « Jeudi 15 octobre » (the year is only added when it isn't the current year). */
 export function formatLongDate(key: string): string {
   const date = fromDateKey(key);
   const sameYear = date.getFullYear() === new Date().getFullYear();
@@ -43,7 +43,7 @@ export function formatLongDate(key: string): string {
   );
 }
 
-/** « Octobre 2026 », pour les sections de l'historique. */
+/** « Octobre 2026 », used for the history section headers. */
 export function formatMonth(key: string): string {
   return capitalize(
     fromDateKey(key).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })

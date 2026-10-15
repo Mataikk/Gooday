@@ -24,9 +24,9 @@ const STATUS_TEXT: Record<SaveStatus, string> = {
 
 type Props = {
   date: string;
-  /** Petit texte au-dessus de la date (ex. « Aujourd'hui »). */
+  /** Small label above the date (e.g. « Aujourd’hui »). */
   eyebrow?: string;
-  /** Afficher la date en grand en haut de l'écran (inutile si un header la montre déjà). */
+  /** Show the date as a large title at the top (not needed when a header already shows it). */
   showTitle?: boolean;
   footer?: ReactNode;
 };
