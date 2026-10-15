@@ -1,50 +1,47 @@
-# Welcome to your Expo app 👋
+# Gooday
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Journal intime pour iOS : une note par jour, et une note de la journée sur 5 étoiles.
 
-## Get started
+Application [Expo](https://expo.dev) (SDK 57), testée avec **Expo Go** sur iPhone.
 
-1. Install dependencies
+## Lancer le projet (Windows)
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Prérequis : [Node.js LTS](https://nodejs.org) et l'app **Expo Go** sur l'iPhone.
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Scanne le QR code avec l'appareil photo de l'iPhone. Le PC et l'iPhone doivent être sur le même Wi-Fi ; sinon : `npx expo start --tunnel`.
 
-## Learn more
+## Fonctionnalités
 
-To learn more about developing your project with Expo, look at the following resources:
+- **Aujourd'hui** : 5 étoiles + zone de texte, enregistrement automatique.
+- **Historique** : liste des jours par mois, nombre de jours écrits et note moyenne.
+- **Détail d'un jour** : relire, modifier ou supprimer une journée passée.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Structure
 
-## Join the community
+```
+src/
+  app/                 Écrans (Expo Router : un fichier = un écran)
+    _layout.tsx        Base de données + navigation
+    (tabs)/index.tsx   Onglet « Aujourd'hui »
+    (tabs)/history.tsx Onglet « Historique »
+    day/[date].tsx     Détail d'un jour passé
+  components/          Éditeur du jour, étoiles, textes thémés
+  db/entries.ts        Base SQLite (table `entries`, une ligne par jour)
+  hooks/               Chargement + enregistrement auto, date du jour
+  utils/dates.ts       Clés de date 'AAAA-MM-JJ' et formatage en français
+```
 
-Join our community of developers creating universal apps.
+## Commandes utiles
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npx expo install <paquet>   # ajouter une dépendance compatible avec le SDK
+npx tsc --noEmit            # vérifier les types
+npx expo lint               # linter
+```
+
+> Les notes écrites dans Expo Go restent dans Expo Go : ce sont des données de test.
